@@ -1,0 +1,22 @@
+{
+  "Tasks":[
+    {
+      "id": 1,
+      "text": "Lear React JS",
+      "day": "dec 30th at 10:00pm",
+      "reminder": true
+    },
+    {
+      "id": 2,
+      "text": "Lear React Native",
+      "day": "Jan 30th at 9:00pm",
+      "reminder": true
+    },
+    {
+      "id": 3,
+      "text": "Lear Mobile Hybrid tools",
+      "day": "Feb 10th at 10:00pm",
+      "reminder": true
+    }
+  ]
+}

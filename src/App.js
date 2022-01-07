@@ -1,34 +1,22 @@
 import './App.css';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddTask from './components/AddTask';
 var a = 10 ;
 function App() {
 
   const [showAddTask, setShowAddTask] = useState(false)
-  const [tasks, setTasks] = useState(
-    [
-        {
-            id: 1,
-            text: 'Lear React JS',
-            day: 'dec 30th at 10:00pm',
-            reminder: true
-        },
-        {
-            id: 2,
-            text: 'Lear React Native',
-            day: 'Jan 30th at 9:00pm',
-            reminder: false
-        },
-        {
-            id: 3,
-            text: 'Lear Mobile Hybrid tools',
-            day: 'Feb 10th at 10:00pm',
-            reminder: false
-        }
-      ]
-  )
+  const [tasks, setTasks] = useState([])
+
+  useEffect(()=>{
+    const fetchTasks = async () => {
+      const res = await fetch("http://localhost:5000/Tasks")
+      const data = await res.json()
+      console.log(data);
+    }
+    fetchTasks()
+  },[])
 
   //Add task
   const addTask = (task) => {
