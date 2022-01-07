@@ -33,6 +33,13 @@ function App() {
     setTasks(tasks.filter((task)=> task.id !== id))
   }
 
+  //update Task (reminder)
+  const updateTask = (id) => {
+    setTasks(
+      tasks.map((task) => task.id == id ? {...task, reminder: !task.reminder } : task)
+    )
+  }
+
   const onClick = (e) => {
     console.log('test');
   }
@@ -40,7 +47,7 @@ function App() {
   return (
     <div className="container">
       <Header test2={onClick}/>
-      <Tasks tasks={tasks} onDelete={deleteTask} />
+      <Tasks tasks={tasks} onDelete={deleteTask} updateTasks={updateTask} />
     </div>
   );
 }
