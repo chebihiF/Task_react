@@ -51,7 +51,7 @@ function App() {
 
   return (
     <div className="container">
-      <Header onAdd={()=>{setShowAddTask(!showAddTask)}}/>
+      <Header onAdd={()=>{setShowAddTask(!showAddTask)}} showTask={showAddTask}/>
       {showAddTask && <AddTask onAdd={addTask} />}
       <Tasks tasks={tasks} onDelete={deleteTask} updateTasks={updateTask} />
     </div>
