@@ -10,23 +10,42 @@ function App() {
   const [tasks, setTasks] = useState([])
 
   useEffect(()=>{
-    const fetchTasks = async () => {
-      const res = await fetch("http://localhost:5000/Tasks")
-      const data = await res.json()
-      console.log(data);
+    const getTasks = async () => {
+      const tasksFromServer = await fetchTasks()
+      setTasks(tasksFromServer)
     }
-    fetchTasks()
+    getTasks()
   },[])
 
+
+  const fetchTasks = async () => {
+    const res = await fetch("http://localhost:5000/Tasks")
+    const data = await res.json()
+    console.log(data);
+    return data ;
+  }
+
   //Add task
-  const addTask = (task) => {
-    const id = Math.floor(Math.random()*100 + 1)
-    const newTask = {id, ...task}
-    setTasks([...tasks, newTask])
+  const addTask = async (task) => {
+
+    const res = await fetch("http://localhost:5000/Tasks",{
+      method: 'POST',
+      headers:{
+        'Content-type':'application/json'
+      },
+      body: JSON.stringify(task)
+    })
+    const data = await res.json()
+    setTasks([...tasks, data])
   }
 
   // delete Task
-  const deleteTask = (id) => {
+  const deleteTask = async (id) => {
+    
+    await fetch(`http://localhost:5000/Tasks/${id}`,{
+      method: 'DELETE'
+    })
+    
     setTasks(tasks.filter((task)=> task.id !== id))
   }
 

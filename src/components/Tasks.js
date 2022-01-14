@@ -5,7 +5,7 @@ function Tasks({tasks, onDelete, updateTasks}) {
 
     return (
         <>
-          {tasks.map((task)=>(<Task task={task} OnDeleteTasks={onDelete} updateTask={updateTasks} />))}  
+          {tasks.map((task,index)=>(<Task key={index}  task={task} OnDeleteTasks={onDelete} updateTask={updateTasks} />))}  
         </>
     )
 }
