@@ -1,8 +1,13 @@
+import React from 'react'
 import './App.css';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
 import { useEffect, useState } from 'react';
 import AddTask from './components/AddTask';
+import Footer from './components/Footer';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
+import About from './components/About';
+
 var a = 10 ;
 function App() {
 
@@ -20,6 +25,13 @@ function App() {
 
   const fetchTasks = async () => {
     const res = await fetch("http://localhost:5000/Tasks")
+    const data = await res.json()
+    console.log(data);
+    return data ;
+  }
+
+  const fetchTask = async (id) => {
+    const res = await fetch(`http://localhost:5000/Tasks/${id}`)
     const data = await res.json()
     console.log(data);
     return data ;
@@ -50,18 +62,38 @@ function App() {
   }
 
   //update Task (reminder)
-  const updateTask = (id) => {
+  const updateTask = async (id) => {
+
+    const taskToUpdate = await fetchTask(id);
+    const updatedTask = {...taskToUpdate, reminder: !taskToUpdate.reminder}
+    
+    const res = await fetch(`http://localhost:5000/Tasks/${id}`,{
+      method: 'PUT',
+      headers: {
+        'Content-type':'Application/json'
+      },
+      body: JSON.stringify(updatedTask)
+    })
+
+    const data = await res.json();
+
     setTasks(
-      tasks.map((task) => task.id == id ? {...task, reminder: !task.reminder } : task)
+      tasks.map((task) => task.id == id ? {...task, reminder: data.reminder } : task)
     )
   }
 
   return (
-    <div className="container">
-      <Header onAdd={()=>{setShowAddTask(!showAddTask)}} showTask={showAddTask}/>
-      {showAddTask && <AddTask onAdd={addTask} />}
-      <Tasks tasks={tasks} onDelete={deleteTask} updateTasks={updateTask} />
-    </div>
+    <Router>
+      <div className="container">
+        <Header onAdd={()=>{setShowAddTask(!showAddTask)}} showTask={showAddTask}/>
+        {showAddTask && <AddTask onAdd={addTask} />}
+        <Route path='/' exact render={(props)=>(      
+            <Tasks tasks={tasks} onDelete={deleteTask} updateTasks={updateTask} />
+        )} />
+        <Route path="/about" component={About} />
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
